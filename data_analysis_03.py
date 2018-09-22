@@ -10,6 +10,12 @@ data_path = './data/bikeshare'
 data_filenames = ['2017-q1_trip_history_data.csv', '2017-q2_trip_history_data.csv',
                   '2017-q3_trip_history_data.csv', '2017-q4_trip_history_data.csv']
 
+# 结果保存路径
+
+output_path = './output'
+if not os.path.exists(output_path):
+    os.makedirs(output_path)
+
 
 def collect_and_process_data():
     """
@@ -21,7 +27,7 @@ def collect_and_process_data():
         data_arr = np.loadtxt(data_file, delimiter=',', dtype='str', skiprows=1)
         # 去掉双引号
         member_type_col = np.core.defchararray.replace(data_arr[:, -1], '"', '')
-        member_type_col = member_type_col.reshape(-1, 1) # -1指自动计算
+        member_type_col = member_type_col.reshape(-1, 1)  # -1指自动计算
         member_type_list.append(member_type_col)
     # 数据拼接,list拼接
     year_member_type = np.concatenate(member_type_list)
@@ -45,12 +51,18 @@ def save_and_show_results(n_users):
         结果展示
     """
     plt.figure()
-    plt.pie(n_users, labels=['Member', 'Casual'], autopct='%.2f%%', shadow=True)
+    plt.pie(n_users, labels=['Member', 'Casual'], autopct='%.2f%%', shadow=True, explode=(0.05, 0))
+    plt.axis('equal')
+    plt.tight_layout()
+    plt.savefig(os.path.join(output_path,'./piechart.png'))
+    plt.show()
+
     # .2f表示输出浮点数并保留两位小数。 % % 表示直接输出一个 %。
+
 
 def main():
     year_member_type = collect_and_process_data()
-    n_users =  analyze_data(year_member_type)
+    n_users = analyze_data(year_member_type)
     save_and_show_results(n_users)
 
 
