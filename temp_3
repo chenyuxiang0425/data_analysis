@@ -1,0 +1,29 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+output_path = './output'
+# 1.读取csv数据文件
+load_arr1 = np.loadtxt('./data/bikeshare/201801_temp.csv', delimiter=',', skiprows=1)
+load_arr2 = np.loadtxt('./data/bikeshare/201802_temp.csv', delimiter=',', skiprows=1)
+load_arr3 = np.loadtxt('./data/bikeshare/201803_temp.csv', delimiter=',', skiprows=1)
+# 2.数组合并
+combined_data_arr = np.concatenate([load_arr1, load_arr2, load_arr3])
+
+# 3.数据过滤
+# 使用一列数据和0做比较，构造布尔型数组；将布尔型数组放在向量的索引操作中
+
+# shape[0]返回行数
+# shape函数是numpy.core.fromnumeric中的函数，它的功能是查看矩阵或者数组的维数。
+n_positive_days = combined_data_arr[combined_data_arr >= 0].shape[0]  # 零上温度
+
+n_negative_days = combined_data_arr[combined_data_arr <= 0].shape[0]  # 零下温度
+
+n_days = [n_positive_days, n_negative_days]
+# 4.饼状图
+plt.figure()
+# .2f表示输出浮点数并保留两位小数。 % % 表示直接输出一个 %。
+plt.pie(n_days, labels=['>=0', '<0'], autopct='%.2f%%')
+plt.axis('equal')
+plt.tight_layout()
+plt.savefig(os.path.join(output_path, 'temp_piechart.png'))
+plt.show()
