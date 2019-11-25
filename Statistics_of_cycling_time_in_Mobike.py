@@ -1,8 +1,4 @@
-# 在这里模仿着视频敲一遍代码，加深印象
 # 数据源下载地址：https://video.mugglecode.com/data.zip，
-# 下载压缩包后解压即可。如果你的电脑可用内存小于 4G，运行数据源时可能会报错，
-# 那么你可下载迷你数据源：https://video.mugglecode.com/mini_data.zip，
-# 从60万行数据删减到了2万行。
 import os
 import numpy as np
 import matplotlib.pyplot as plt
